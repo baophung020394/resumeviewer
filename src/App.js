@@ -5,16 +5,33 @@ import About from './components/About';
 import Resume from './components/Resume';
 import Portfolio from './components/Portfolio';
 import Testimonials from './components/Testimonials';
-import { Contact } from './components/Contact';
+import Contact from './components/Contact';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import React from 'react';
 
 function App() {
+  const [resumeData, setResumeData] = useState([])
+  useEffect( async () => {
+    await axios
+      .get('http://localhost:3000/resumeData.json')
+      .then(resultResume => {
+        setResumeData(resultResume.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    
+  }, [])
+
+
   return (
     <div className="App">
-      <Header />
-      <About />
-      <Resume />
-      <Portfolio />
-      <Testimonials />
+      <Header data={resumeData} />
+      <About data={resumeData} />
+      <Resume data={resumeData} />
+      <Portfolio data={resumeData} />
+      <Testimonials data={resumeData} />
       <Contact />
       <Footer />
     </div>
